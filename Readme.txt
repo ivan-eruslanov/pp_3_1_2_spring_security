@@ -1,6 +1,6 @@
 Добавил автоматическое создание тестовых пользователей.
 packages:
-    util/Init.class
+    init/UsersInit.class
         username: user (ROLE_USER)
         password: 200
         /************/
