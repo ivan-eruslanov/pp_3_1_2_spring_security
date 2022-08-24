@@ -14,12 +14,20 @@
     <hr>
     <h4>Update User List</h4>
     <form th:method="PATCH" th:action="@{/admin/{id}(id=${user.getId()})}" th:object="${user}">
-        <label for="name">username: </label>
-        <input type="text" th:field="*{name}" id="name" class="form-control mb-4 col-4">
-        <label for="email">email: </label>
+        <label for="id">id: </label>
+        <input type="number" readonly th:field="*{id}" id="id" class="form-control mb-4 col-4">
+        <label for="userName">User name: </label>
+        <input type="text" th:field="*{username}" id="userName" class="form-control mb-4 col-4">
+        <label for="firstName">first name: </label>
+        <input type="text" th:field="*{firstName}" id="firstName" class="form-control mb-4 col-4">
+        <label for="lastName">Last name: </label>
+        <input type="text" th:field="*{lastName}" id="lastName" class="form-control mb-4 col-4">
+        <label for="age">Age: </label>
+        <input type="number" th:field="*{age}" id="age" class="form-control mb-4 col-4">
+        <label for="email">Email: </label>
         <input type="text" th:field="*{email}" id="email" class="form-control mb-4 col-4">
-        <label for="password">password: </label>
-        <input type="text" th:field="*{password}" id="password" class="form-control mb-4 col-4">
+        <label for="password">Password: </label>
+        <input type="text" readonly th:field="*{password}" id="password" class="form-control mb-4 col-4">
         <label for="rolesList">input role: </label>
         <select id="rolesList" name="rolesList" class="form-control mb-4 col-4"
                 multiple size="2" >

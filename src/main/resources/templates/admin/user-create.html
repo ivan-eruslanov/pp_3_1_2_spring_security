@@ -14,11 +14,17 @@
     <hr>
     <h4>Save User List</h4>
     <form th:method="POST" th:action="@{/admin}" th:object="${user}">
-        <label for="name">username: </label>
-        <input type="text" th:field="*{name}" id="name" placeholder="username" class="form-control mb-4 col-4">
-        <label for="email">email: </label>
+        <label for="userName">User name: </label>
+        <input type="text" th:field="*{username}" id="userName" placeholder="user name" class="form-control mb-4 col-4">
+        <label for="firstName">First name: </label>
+        <input type="text" th:field="*{firstName}" id="firstName" placeholder="first name" class="form-control mb-4 col-4">
+        <label for="lastName">Last name: </label>
+        <input type="text" th:field="*{lastName}" id="lastName" placeholder="last name" class="form-control mb-4 col-4">
+        <label for="age">Age: </label>
+        <input type="number" th:field="*{age}" id="age" placeholder="username" class="form-control mb-4 col-4">
+        <label for="email">Email: </label>
         <input type="text" th:field="*{email}" id="email" placeholder="email" class="form-control mb-4 col-4">
-        <label for="password">password: </label>
+        <label for="password">Password: </label>
         <input type="text" th:field="*{password}" id="password" placeholder="password" class="form-control mb-4 col-4">
         <label for="rolesList">input role: </label>
         <select id="rolesList" name="rolesList" class="form-control mb-4 col-4"

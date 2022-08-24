@@ -20,7 +20,11 @@
     <table th:border="1" class="table table-striped table-responsive-md">
         <thead>
         <tr>
+            <th>Id</th>
             <th>UserName</th>
+            <th>FirsName</th>
+            <th>LastName</th>
+            <th>Age</th>
             <th>Email</th>
             <th>Password</th>
             <th>Role</th>
@@ -30,7 +34,11 @@
         </thead>
         <tbody>
         <tr th:each="user : ${users}">
-            <td th:utext="${user.getName()}">...</td>
+            <td th:utext="${user.getId()}">...</td>
+            <td th:utext="${user.getUsername()}">...</td>
+            <td th:utext="${user.getFirstName()}">...</td>
+            <td th:utext="${user.getLastName()}">...</td>
+            <td th:utext="${user.getAge()}"></td>
             <td th:utext="${user.getEmail()}">...</td>
             <td th:utext="${user.getPassword()}">...</td>
             <td th:utext="${user.getRoles()}">...</td>

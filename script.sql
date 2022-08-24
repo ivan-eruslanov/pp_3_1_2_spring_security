@@ -1,8 +1,11 @@
 create table users (
     id bigint primary key auto_increment,
-    name varchar(30) not null,
-    password varchar(80),
-    email varchar(50) unique
+    username varchar(255) not null,
+    first_name varchar(255) not null,
+    last_name varchar(255) not null,
+    age smallint,
+    password varchar(255) not null,
+    email varchar(255) not null unique
 );
 
 create table roles (
@@ -20,6 +23,8 @@ create table users_roles (
 
 insert into roles (role) values ('ROLE_USER'), ('ROLE_ADMIN');
 
-insert into users (name, password, email) values ('user', '$2a$10$iJiWiFjKGu2pZx2FoIQyaOK.cRx3zyxAobFa.OfuMPSylMdzNYCo.', 'user@gmail.com');
+insert into users (username, first_name, last_name, age, password, email)
+    values
+        ('user', 'name', 'last', 23, '$2a$10$iJiWiFjKGu2pZx2FoIQyaOK.cRx3zyxAobFa.OfuMPSylMdzNYCo.', 'user@gmail.com');
 
 insert into users_roles (user_id, role_id) values (1, 2);

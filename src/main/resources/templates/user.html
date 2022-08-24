@@ -13,9 +13,32 @@
 <div class="container my-2">
     <h3>User page info</h3>
     <hr>
-    <p>id: <span th:text ="${user.getId()}"></span></p>
-    <p>username: <span th:text ="${user.getUsername()}"></span></p>
-    <p>email: <span th:text ="${user.getEmail()}"></span></p>
+    <table th:border="1" class="table table-striped table-responsive-md">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>User Name</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Age</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Role</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${user.getId()}">...</td>
+            <td th:text="${user.getUsername()}">...</td>
+            <td th:text="${user.getFirstName()}">...</td>
+            <td th:text="${user.getLastName()}">...</td>
+            <td th:text="${user.getAge()}">...</td>
+            <td th:text="${user.getEmail()}">...</td>
+            <td th:text="${user.getPassword()}">...</td>
+            <td th:text="${user.getRoles()}">...</td>
+        </tr>
+        </tbody>
+    </table>
     <br>
     <form th:action="@{/logout}" method="post">
         <input type="submit" value="logout" class="btn btn-primary">

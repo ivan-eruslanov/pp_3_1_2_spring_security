@@ -1,0 +1,8 @@
+Добавил автоматическое создание тестовых пользователей.
+packages:
+    util/Init.class
+        username: user (ROLE_USER)
+        password: 200
+        /************/
+        username: admin (ROLE_ADMIN)
+        password: 100
