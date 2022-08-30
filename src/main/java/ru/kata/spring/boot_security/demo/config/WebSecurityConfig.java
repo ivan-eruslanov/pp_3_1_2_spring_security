@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/main/**").authenticated()
                 .and()
-                    .formLogin().loginPage("/").loginProcessingUrl("/train-login").successForwardUrl("/main")
+                    .formLogin().loginPage("/").loginProcessingUrl("/train-login").successForwardUrl("/admin-and-user")
                     .permitAll()
                 .and()
                     .logout()
