@@ -17,10 +17,10 @@
 tasks mentor
 /************/
 Добавил автоматическое создание тестовых пользователей.
-packages:
-    init/UsersInit.class
-        username: user (ROLE_USER)
-        password: 200
+packages: настройку лучше ставить 'spring.jpa.hibernate.ddl-auto=create-drop'
+    init/DBInitialization.class
+        username: user@mail.ru (ROLE_USER)
+        password: user
         /************/
-        username: admin (ROLE_ADMIN)
-        password: 100
+        username: admin@mail.ru (ROLE_ADMIN)
+        password: admin
