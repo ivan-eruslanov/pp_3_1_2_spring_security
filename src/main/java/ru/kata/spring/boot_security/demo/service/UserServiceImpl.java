@@ -1,86 +1,85 @@
 package ru.kata.spring.boot_security.demo.service;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
-import java.util.*;
+import java.security.InvalidParameterException;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-    }
-
-
-    @Override
-    public User findById(Long id) {
-        return userRepository.findById(id).orElse(null);
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public List<User> findAll() {
+    @Transactional
+    public void addUser(User user) {
+        User userFromDb = userRepository.findByUsername(user.getUsername());
+        if (userFromDb == null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public User getUserById(Long id) {
+        return userRepository.getReferenceById(id);
+    }
+
+    @Override
+    @Transactional
+    public void updateUserById(User user) {
+        if (userRepository.findByUsername(user.getUsername()) != null &&
+                !userRepository.findByUsername(user.getUsername()).getId().equals(user.getId())) {
+            throw new InvalidParameterException("Don't save user, such email already exists in the database: " + user.getUsername());
+        }
+        if (user.getPassword().isEmpty()) {
+            user.setPassword(userRepository.findById(user.getId()).get().getPassword());
+        } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUserById(Long id) {
+        if (userRepository.findById(id).isPresent()) {
+            userRepository.deleteById(id);
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    @Transactional
-    public void saveUser(User user, String[] selectedRoles) {
-        String encodedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
-        user.setPassword(encodedPassword);
-        Set<Role> roles = new HashSet<>();
-        Arrays.stream(selectedRoles)
-                .forEach(a -> roles.add(roleRepository.findRoleByRole(a)));
-        user.setRoles(roles);
-        userRepository.save(user);
-    }
-
-
-    @Override
-    @Transactional
-    public void updateUser(User oldUser, User newUser, String[] selectedRoles) {
-        Optional<User> oUser = Optional.of(newUser);
-        oUser.get().setPassword(oldUser.getPassword());
-        oUser.get().setEmail(oldUser.getEmail());
-        oUser.get().setUsername(oldUser.getUsername());
-        oUser.get().setFirstName(oldUser.getFirstName());
-        oUser.get().setLastName(oldUser.getLastName());
-        oUser.get().setAge(oldUser.getAge());
-        Set<Role> roles = new HashSet<>();
-        Arrays.stream(selectedRoles)
-                .forEach(x -> roles.add(roleRepository.findRoleByRole(x)));
-        oUser.get().setRoles(roles);
-        userRepository.save(oUser.get());
+    public User getUserByName(String username) {
+        return userRepository.findByUsername(username);
     }
 
     @Override
-    @Transactional
-    public void deleteById(Long id) {
-        userRepository.deleteById(id);
-    }
-
-    @Override
-    public User getUserByUsername(String name) {
-        return userRepository.getUserByUsername(name);
-    }
-
-    @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.getUserByUsername(username);
+        User user = getUserByName(username);
         if (user == null) {
-            throw new UsernameNotFoundException(String.format("User for '%s' not exists ", username));
+            throw new UsernameNotFoundException(String.format("User '%s' not found ", username));
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
+        return user;
     }
 }
