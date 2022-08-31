@@ -12,8 +12,8 @@ public class LoginController {
         return "login";
     }
 
-    @PostMapping("/admin-and-user")
+    @PostMapping("/admin")
     public String redirectToMainPage() {
-        return "redirect:/admin-and-user";
+        return "redirect:/admin";
     }
 }
